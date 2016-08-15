@@ -59,6 +59,7 @@ def load_digits(fn):
     return digits, labels
 
 def deskew(img):
+    # http://docs.opencv.org/3.1.0/dd/d3b/tutorial_py_svm_opencv.html#gsc.tab=0
     m = cv2.moments(img)
     if abs(m['mu02']) < 1e-2:
         return img.copy()
@@ -166,14 +167,13 @@ if __name__ == '__main__':
     samples_train, samples_test = np.split(samples, [train_n])
     labels_train, labels_test = np.split(labels, [train_n])
 
-
-    print('training KNearest...')
-    model = KNearest(k=4)
-    model.train(samples_train, labels_train)
-    vis = evaluate_model(model, digits_test, samples_test, labels_test)
-    cv2.imshow('KNearest test', vis)
-
-    if False:
+    if True:
+        print('training KNearest...')
+        model = KNearest(k=4)
+        model.train(samples_train, labels_train)
+        vis = evaluate_model(model, digits_test, samples_test, labels_test)
+        cv2.imshow('KNearest test', vis)
+    else:
         print('training SVM...')
         model = SVM(C=2.67, gamma=5.383)
         model.train(samples_train, labels_train)
